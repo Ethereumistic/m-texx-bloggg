@@ -2,16 +2,103 @@ import Container from "@/components/container";
 import ThemeSwitch from "@/components/themeSwitch";
 import Image from "next/image";
 import { myLoader } from "@/utils/all";
+import Link from "next/link";
 import VercelLogo from "../public/img/vercel.svg";
+import { FaFacebook, FaInstagram, FaTiktok, FaYoutube } from 'react-icons/fa';
+import {
+  MapPinIcon,
+  EnvelopeIcon,
+  PhoneIcon
+} from "@heroicons/react/24/outline";
 
-export default function Footer(props) {
+export default function Footer({ props, settings }) {
   return (
     <Container className="mt-10 border-t border-gray-100 dark:border-gray-800">
+
+<nav className="flex flex-wrap justify-center mt-8">
+          <Link href="/whatcollect"
+                className='transition-all duration-300 transform hover:scale-105 cursor-pointer'>
+  <span className="my-4 font-oswald text-xl text-gray-500 dark:text-gray-600 px-4 transition-all duration-300 transform hover:scale-105 hover:text-green-500 cursor-pointer">
+    Какво събираме?
+  </span>
+</Link>
+<Link href="/druzet"
+        className='transition-all duration-300 transform hover:scale-105 cursor-pointer'>
+  <span className="my-4 font-oswald text-xl text-gray-600 px-4 transition-all duration-300 transform hover:text-green-500 cursor-pointer">
+    ДРУЗЕТ
+  </span>
+</Link>
+<Link href="/"
+        className='transition-all duration-300 transform hover:scale-105 cursor-pointer'>
+  <span className="my-4 font-oswald text-xl text-gray-600 px-4 transition-all duration-300 transform hover:scale-105 hover:text-green-500 cursor-pointer">
+    Любопитни Факти
+  </span>
+</Link>
+<Link href="/"
+        className='transition-all duration-300 transform hover:scale-105 cursor-pointer'>
+  <span className="my-4 font-oswald text-xl text-gray-600 px-4 transition-all duration-300 transform hover:scale-105 hover:text-green-500 cursor-pointer">
+    Бисквитки
+  </span>
+</Link>
+
+          </nav>
+
+          <div className="w-full mb-4">
+          <nav className="flex flex-wrap justify-center">
+            <Link href="/"
+                    className='mx-4'>
+              <span className="text-gray-600 hover:text-green-500 hover:underline px-4 transition-all duration-300 transform hover:scale-125">
+                <FaFacebook size={50} />
+              </span>
+            </Link>
+            <Link href="/"
+            className='mx-4'>
+              <span className="text-gray-600 hover:text-green-500 hover:underline px-4 transition-all duration-300 transform hover:scale-125">
+                <FaInstagram size={50} />
+              </span>
+            </Link>
+            <Link href="/"
+            className='mx-4'>
+              <span className="text-gray-600 hover:text-green-500 hover:underline px-4 transition-all duration-300 transform hover:scale-125">
+                <FaTiktok size={50} />
+              </span>
+            </Link>
+            <Link href="/"
+            className='mx-4'>
+              <span className="text-gray-600 hover:text-green-500 hover:underline px-4 transition-all duration-300 transform hover:scale-125">
+                <FaYoutube size={50} />
+              </span>
+            </Link>
+          </nav>
+        </div>
+
+        <div className="mt-5 ml-10">
+            <div className="flex items-center mt-2 space-x-2 text-dark-600 dark:text-gray-400">
+              <MapPinIcon className="w-4 h-4" />
+              <span>Индустриална 44, Габрово 5302, България</span>
+            </div>
+            {settings?.email && (
+              <div className="flex items-center mt-2 space-x-2 text-dark-600 dark:text-gray-400">
+                <EnvelopeIcon className="w-4 h-4" />
+                <a href={`mailto:${settings.email}`}>
+                  {settings.email}
+                </a>
+              </div>
+            )}
+            {settings?.phone && (
+              <div className="flex items-center mt-2 space-x-2 text-dark-600 dark:text-gray-400">
+                <PhoneIcon className="w-4 h-4" />
+                <a href={`tel:${settings.phone}`}>{settings.phone}</a>
+              </div>
+            )}
+          </div>
+
       <div className="text-center text-sm">
         Copyright © {new Date().getFullYear()} {props?.copyright}. All
         rights reserved.
       </div>
       <div className="mt-1 flex justify-center gap-1 text-center text-sm text-gray-500 dark:text-gray-600">
+        
         <span>
           {" "}
           Made by{" "}
@@ -23,7 +110,7 @@ export default function Footer(props) {
             href="https://web3templates.com/?ref=stablo-template"
             rel="noopener"
             target="_blank">
-            Web3Templates
+            BTC Industries
           </a>
         </span>
         <span>&middot;</span>
@@ -53,7 +140,6 @@ export default function Footer(props) {
             />
           </a>
         </div>
-        <ThemeSwitch />
       </div>
       <Backlink />
     </Container>
@@ -86,7 +172,7 @@ const Backlink = () => {
         />
       </svg>
 
-      <span> Purchase Pro ↗</span>
+      <span>Свържи се с нас!</span>
     </a>
   );
 };

@@ -9,8 +9,30 @@ import { urlForImage } from "@/lib/sanity/image";
 import cx from "clsx";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import { myLoader } from "@/utils/all";
+import ThemeSwitch from "./themeSwitch";
+import { useState, useEffect } from "react";
+
+
+
 
 export default function Navbar(props) {
+
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const offset = window.scrollY;
+      if (offset > 10) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const leftmenu = [
     {
       label: "Home",
@@ -28,32 +50,52 @@ export default function Navbar(props) {
 
   const rightmenu = [
     {
-      label: "Archive",
-      href: "/archive"
+      label: "За Нас",
+      href: "/"
     },
     {
-      label: "Pro Version",
+      label: "Новини",
       href: "https://stablo-pro.web3templates.com/",
       external: true,
       badge: "new"
     },
     {
-      label: "Download",
+      label: "Рециклиране",
       href: "https://web3templates.com/templates/stablo-minimal-blog-website-template",
       external: true
-    }
+    },
+    {
+      label: "Локации",
+      href: "/"
+    },
+    {
+      label: "Контакти",
+      href: "/contact"
+    },
+    {
+      label: "Партньори",
+      href: "/partners"
+    },
+    {
+      label: "Друзет",
+      href: "/druzet"
+    },
+
   ];
 
-  const mobilemenu = [...leftmenu, ...rightmenu];
+  // const mobilemenu = [...leftmenu, ...rightmenu];
+  const mobilemenu = [...rightmenu];
 
   return (
-    <Container>
-      <nav>
+<div className={`fixed top-0 z-10 w-full box-content transition-all duration-500 ease-in-out ${isScrolled ? "h-20 shadow-md" : "h-28 shadow"} bg-white dark:bg-gray-800`}>
+<Container className="-mt-2">
+      <nav className={`transform ${isScrolled ? 'scale-90 -translate-y-4' : ''} transition-transform duration-500 ease-in-out`}>
         <Disclosure>
           {({ open }) => (
             <>
               <div className="flex flex-wrap justify-between md:flex-nowrap md:gap-10">
-                <div className="order-1 hidden w-full flex-col items-center justify-start md:order-none md:flex md:w-auto md:flex-1 md:flex-row md:justify-end">
+                {/* <div className="order-1 hidden w-full flex-col items-center justify-start md:order-none md:flex md:w-auto md:flex-1 md:flex-row md:justify-end">
+
                   {leftmenu.map((item, index) => (
                     <Fragment key={`${item.label}${index}`}>
                       {item.children && item.children.length > 0 ? (
@@ -74,9 +116,9 @@ export default function Navbar(props) {
                       )}
                     </Fragment>
                   ))}
-                </div>
+                </div> */}
                 <div className="flex w-full items-center justify-between md:w-auto">
-                  <Link href="/" className="w-28 dark:hidden">
+                  <Link href="/" className="w-32 dark:hidden">
                     {props.logo ? (
                       <Image
                         {...urlForImage(props.logo)}
@@ -86,7 +128,7 @@ export default function Navbar(props) {
                       />
                     ) : (
                       <span className="block text-center">
-                        Stablo
+                        M-Texx
                       </span>
                     )}
                   </Link>
@@ -100,13 +142,14 @@ export default function Navbar(props) {
                       />
                     ) : (
                       <span className="block text-center">
-                        Stablo
+                        M-Texx
                       </span>
                     )}
                   </Link>
+                  
                   <Disclosure.Button
                     aria-label="Toggle Menu"
-                    className="ml-auto rounded-md px-2 py-1 text-gray-500 focus:text-blue-500 focus:outline-none dark:text-gray-300 md:hidden ">
+                    className="ml-auto rounded-md px-2 py-1 text-gray-500 focus:text-green-500 focus:outline-none dark:text-gray-300 md:hidden ">
                     <svg
                       className="h-6 w-6 fill-current"
                       xmlns="http://www.w3.org/2000/svg"
@@ -117,16 +160,22 @@ export default function Navbar(props) {
                           clipRule="evenodd"
                           d="M18.278 16.864a1 1 0 0 1-1.414 1.414l-4.829-4.828-4.828 4.828a1 1 0 0 1-1.414-1.414l4.828-4.829-4.828-4.828a1 1 0 0 1 1.414-1.414l4.829 4.828 4.828-4.828a1 1 0 1 1 1.414 1.414l-4.828 4.829 4.828 4.828z"
                         />
+                        
                       )}
                       {!open && (
                         <path
                           fillRule="evenodd"
                           d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"
                         />
+                        
                       )}
                     </svg>
                   </Disclosure.Button>
+                  <div className="xl:hidden lg:hidden md:hidden ml-4">
+                  <ThemeSwitch />
+                  </div>
                 </div>
+                        
 
                 <div className="order-2 hidden w-full flex-col items-center justify-start md:order-none md:flex md:w-auto md:flex-1 md:flex-row">
                   {rightmenu.map((item, index) => (
@@ -141,12 +190,12 @@ export default function Navbar(props) {
                         <Link
                           href={item.href}
                           key={`${item.label}${index}`}
-                          className="px-5 py-2 text-sm font-medium text-gray-600 hover:text-blue-500 dark:text-gray-400"
+                          className="px-5 py-2 text-sm font-medium text-gray-600 hover:text-green-500 dark:text-gray-400"
                           target={item.external ? "_blank" : ""}
                           rel={item.external ? "noopener" : ""}>
                           <span> {item.label}</span>
                           {item.badge && (
-                            <span className="ml-2 rounded bg-blue-100 px-2 py-0.5 text-xs font-semibold text-blue-600 dark:bg-cyan-200 dark:text-blue-800 ">
+                            <span className="ml-2 rounded bg-blue-100 px-2 py-0.5 text-xs font-semibold text-green-600 dark:bg-cyan-200 dark:text-blue-800 ">
                               {item.badge}
                             </span>
                           )}
@@ -154,6 +203,9 @@ export default function Navbar(props) {
                       )}
                     </Fragment>
                   ))}
+                  <div className="ml-4">
+                  <ThemeSwitch />
+                  </div>
                 </div>
               </div>
               <Disclosure.Panel>
@@ -167,6 +219,7 @@ export default function Navbar(props) {
                           items={item.children}
                           mobile={true}
                         />
+                        
                       ) : (
                         <Link
                           href={item.href}
@@ -179,13 +232,17 @@ export default function Navbar(props) {
                       )}
                     </Fragment>
                   ))}
+                  
+                  
                 </div>
               </Disclosure.Panel>
             </>
           )}
         </Disclosure>
+        
       </nav>
     </Container>
+    </div>
   );
 }
 
@@ -222,8 +279,10 @@ const DropdownMenu = ({ menu, items, mobile }) => {
               )}>
               <div className={cx(!mobile && "py-3")}>
                 {items.map((item, index) => (
+                  <div>
                   <Menu.Item as="div" key={`${item.title}${index}`}>
                     {({ active }) => (
+                      
                       <Link
                         href={item?.path ? item.path : "#"}
                         className={cx(
@@ -233,15 +292,23 @@ const DropdownMenu = ({ menu, items, mobile }) => {
                             : "text-gray-700 hover:text-blue-500 focus:text-blue-500 dark:text-gray-300"
                         )}>
                         <span> {item.title}</span>
+                        
                       </Link>
+                      
                     )}
+
                   </Menu.Item>
+                  
+                  </div>
                 ))}
               </div>
+              
             </Menu.Items>
+            
           </Transition>
         </>
       )}
+      
     </Menu>
   );
 };
