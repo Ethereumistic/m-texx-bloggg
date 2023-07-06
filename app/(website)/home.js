@@ -5,12 +5,12 @@ import PostList from '@/components/postlist';
 
 
 export default function Post({ posts }) {
-  
+
 
   return (
     <>
       {/* Render the banner image */}
-
+      
       {posts && (
         <Container>
           <div className="grid gap-10 md:grid-cols-2 lg:gap-10">

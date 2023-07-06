@@ -15,6 +15,7 @@ import { useState, useEffect } from "react";
 
 
 
+
 export default function Navbar(props) {
 
   const [isScrolled, setIsScrolled] = useState(false);
@@ -86,6 +87,8 @@ export default function Navbar(props) {
   // const mobilemenu = [...leftmenu, ...rightmenu];
   const mobilemenu = [...rightmenu];
 
+  
+
   return (
 <div className={`fixed top-0 z-10 w-full box-content transition-all duration-500 ease-in-out ${isScrolled ? "h-20 shadow-md" : "h-28 shadow"} bg-white dark:bg-gray-800`}>
 <Container className="-mt-2">
@@ -132,7 +135,7 @@ export default function Navbar(props) {
                       </span>
                     )}
                   </Link>
-                  <Link href="/" className="hidden w-28 dark:block">
+                  <Link href="/" className="hidden w-32 dark:block">
                     {props.logoalt ? (
                       <Image
                         {...urlForImage(props.logoalt)}
@@ -146,12 +149,14 @@ export default function Navbar(props) {
                       </span>
                     )}
                   </Link>
+
+                  
                   
                   <Disclosure.Button
                     aria-label="Toggle Menu"
-                    className="ml-auto rounded-md px-2 py-1 text-gray-500 focus:text-green-500 focus:outline-none dark:text-gray-300 md:hidden ">
+                    className="ml-auto mt-4 rounded-md px-2 py-1 text-gray-500 focus:text-green-500 focus:outline-none dark:text-gray-300 md:hidden ">
                     <svg
-                      className="h-6 w-6 fill-current"
+                      className="h-6 w-6 fill-current z-40"
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24">
                       {open && (
@@ -164,6 +169,7 @@ export default function Navbar(props) {
                       )}
                       {!open && (
                         <path
+                          
                           fillRule="evenodd"
                           d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"
                         />
@@ -171,7 +177,7 @@ export default function Navbar(props) {
                       )}
                     </svg>
                   </Disclosure.Button>
-                  <div className="xl:hidden lg:hidden md:hidden ml-4">
+                  <div className="xl:hidden lg:hidden md:hidden ml-4 mt-4">
                   <ThemeSwitch />
                   </div>
                 </div>
@@ -208,8 +214,8 @@ export default function Navbar(props) {
                   </div>
                 </div>
               </div>
-              <Disclosure.Panel>
-                <div className="order-2 -ml-4 mt-4 flex w-full flex-col items-center justify-start md:hidden">
+              <Disclosure.Panel onBlur={() => open && setMenuOpen(false)} >
+                <div className="order-2 text-center bg-slate-50	dark:bg-gray-600 rounded-2xl -ml-2 mt-8 flex w-1/2 flex-col items-center justify-start md:hidden">
                   {mobilemenu.map((item, index) => (
                     <Fragment key={`${item.label}${index}`}>
                       {item.children && item.children.length > 0 ? (
@@ -222,9 +228,10 @@ export default function Navbar(props) {
                         
                       ) : (
                         <Link
+                        onClick={() => open && setMenuOpen(false)}
                           href={item.href}
                           key={`${item.label}${index}`}
-                          className="w-full px-5 py-2 text-sm font-medium text-gray-600 hover:text-blue-500 dark:text-gray-400"
+                          className="w-full px-5 py-2.5 text-sm font-bold text-gray-600 hover:text-green-500 dark:text-white"
                           target={item.external ? "_blank" : ""}
                           rel={item.external ? "noopener" : ""}>
                           {item.label}
