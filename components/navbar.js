@@ -20,6 +20,12 @@ export default function Navbar(props) {
 
   const [isScrolled, setIsScrolled] = useState(false);
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const handleMenuToggle = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       const offset = window.scrollY;
@@ -56,18 +62,18 @@ export default function Navbar(props) {
     },
     {
       label: "Новини",
-      href: "https://stablo-pro.web3templates.com/",
+      href: "/news",
       external: true,
       badge: "new"
     },
     {
       label: "Рециклиране",
-      href: "https://web3templates.com/templates/stablo-minimal-blog-website-template",
+      href: "/recycling",
       external: true
     },
     {
       label: "Локации",
-      href: "/"
+      href: "/locations"
     },
     {
       label: "Контакти",
@@ -90,7 +96,7 @@ export default function Navbar(props) {
   
 
   return (
-<div className={`fixed top-0 z-10 w-full box-content transition-all duration-500 ease-in-out ${isScrolled ? "h-20 shadow-md" : "h-28 shadow"} bg-white dark:bg-gray-800`}>
+<div className={`fixed top-0 z-40 sm:z-50 w-full box-content transition-all duration-500 ease-in-out ${isScrolled ? "h-20 shadow-md" : "h-28 shadow"} bg-white dark:bg-gray-800`}>
 <Container className="-mt-2">
       <nav className={`transform ${isScrolled ? 'scale-90 -translate-y-4' : ''} transition-transform duration-500 ease-in-out`}>
         <Disclosure>
@@ -120,7 +126,7 @@ export default function Navbar(props) {
                     </Fragment>
                   ))}
                 </div> */}
-                <div className="flex w-full items-center justify-between md:w-auto">
+                <div className="flex w-full items-center justify-between md:w-auto ">
                   <Link href="/" className="w-32 dark:hidden">
                     {props.logo ? (
                       <Image
@@ -153,6 +159,7 @@ export default function Navbar(props) {
                   
                   
                   <Disclosure.Button
+                    onClick={handleMenuToggle}
                     aria-label="Toggle Menu"
                     className="ml-auto mt-4 rounded-md px-2 py-1 text-gray-500 focus:text-green-500 focus:outline-none dark:text-gray-300 md:hidden ">
                     <svg
@@ -177,11 +184,12 @@ export default function Navbar(props) {
                       )}
                     </svg>
                   </Disclosure.Button>
-                  <div className="xl:hidden lg:hidden md:hidden ml-4 mt-4">
+                  <div className="xl:hidden lg:hidden md:hidden  ml-4 mt-4">
                   <ThemeSwitch />
                   </div>
                 </div>
                         
+              <div className={`relative ${isMenuOpen ? 'mb-4' : ''}`}>
 
                 <div className="order-2 hidden w-full flex-col items-center justify-start md:order-none md:flex md:w-auto md:flex-1 md:flex-row">
                   {rightmenu.map((item, index) => (
@@ -213,6 +221,7 @@ export default function Navbar(props) {
                   <ThemeSwitch />
                   </div>
                 </div>
+              </div>
               </div>
               <Disclosure.Panel onBlur={() => open && setMenuOpen(false)} >
                 <div className="order-2 text-center bg-slate-50	dark:bg-gray-600 rounded-2xl -ml-2 mt-8 flex w-1/2 flex-col items-center justify-start md:hidden">
@@ -262,17 +271,17 @@ const DropdownMenu = ({ menu, items, mobile }) => {
         <>
           <Menu.Button
             className={cx(
-              "flex items-center gap-x-1 rounded-md px-5 py-2 text-sm font-medium  outline-none transition-all focus:outline-none focus-visible:text-indigo-500 focus-visible:ring-1 dark:focus-visible:bg-gray-800",
+              "flex items-center gap-x-1 rounded-md px-5 py-2 text-sm font-medium outline-none transition-all focus:outline-none focus-visible:text-indigo-500 focus-visible:ring-1 dark:focus-visible:bg-gray-800",
               open
                 ? "text-blue-500 hover:text-blue-500"
-                : " text-gray-600 dark:text-gray-400 ",
-              mobile ? "w-full px-4 py-2 " : "inline-block px-4 py-2"
+                : "text-gray-600 dark:text-gray-400",
+              mobile ? "w-full px-4 py-2" : "inline-block px-4 py-2"
             )}>
             <span>{menu.label}</span>
-            <ChevronDownIcon className="mt-0.5 h-4 w-4" />
+            <ChevronDownIcon className="mt-0.5 h-4 w-4" onClick={handleMenuToggle} />
           </Menu.Button>
           <Transition
-            as={Fragment}
+            as={React.Fragment}
             enter="lg:transition lg:ease-out lg:duration-100"
             enterFrom="lg:transform lg:opacity-0 lg:scale-95"
             enterTo="lg:transform lg:opacity-100 lg:scale-100"
@@ -281,15 +290,13 @@ const DropdownMenu = ({ menu, items, mobile }) => {
             leaveTo="lg:transform lg:opacity-0 lg:scale-95">
             <Menu.Items
               className={cx(
-                "z-20 origin-top-left rounded-md  focus:outline-none  lg:absolute lg:left-0  lg:w-56",
-                !mobile && "bg-white shadow-lg  dark:bg-gray-800"
+                "z-50 origin-top-left rounded-md focus:outline-none lg:absolute lg:left-0 lg:w-56",
+                !mobile && "bg-white shadow-lg dark:bg-gray-800"
               )}>
               <div className={cx(!mobile && "py-3")}>
                 {items.map((item, index) => (
-                  <div>
                   <Menu.Item as="div" key={`${item.title}${index}`}>
                     {({ active }) => (
-                      
                       <Link
                         href={item?.path ? item.path : "#"}
                         className={cx(
@@ -298,24 +305,16 @@ const DropdownMenu = ({ menu, items, mobile }) => {
                             ? "text-blue-500"
                             : "text-gray-700 hover:text-blue-500 focus:text-blue-500 dark:text-gray-300"
                         )}>
-                        <span> {item.title}</span>
-                        
+                        <span>{item.title}</span>
                       </Link>
-                      
                     )}
-
                   </Menu.Item>
-                  
-                  </div>
                 ))}
               </div>
-              
             </Menu.Items>
-            
           </Transition>
         </>
       )}
-      
     </Menu>
   );
 };

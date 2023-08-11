@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import Container from '@/components/container';
 import PostList from '@/components/postlist';
+import Backlink from '@/components/Backlink';
 
 
 export default function Post({ posts }) {
@@ -35,6 +36,7 @@ export default function Post({ posts }) {
               <span>Виж всички постове...</span>
             </Link>
           </div>
+          <Backlink page="home" />
         </Container>
       )}
     </>

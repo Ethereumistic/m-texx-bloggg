@@ -50,7 +50,7 @@ export default async function Layout({ children, params }) {
   const settings = await getSettings();
   return (
     <>
-      <Navbar {...settings} />
+      <Navbar {...settings}  />
 
       <div className="pt-32">{children}</div>
 
