@@ -69,7 +69,7 @@ export default function Navbar(props) {
     {
       label: "Рециклиране",
       href: "/recycling",
-      external: true
+      external: false,
     },
     {
       label: "Локации",
