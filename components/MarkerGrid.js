@@ -12,14 +12,23 @@ const MarkerGrid = ({ markers }) => {
 
   const cityRefs = {}; // Store refs for each city element
 
-  const handleCitySearch = (city) => {
-    const cityRef = cityRefs[city];
-    if (cityRef) {
-      const offset = -90; // Adjust the offset value as needed
-      const topPos = cityRef.getBoundingClientRect().top + window.pageYOffset + offset;
-      window.scrollTo({ top: topPos, behavior: 'smooth' });
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // Define the handleCitySearch function here
+      const handleCitySearch = (city) => {
+        const cityRef = cityRefs[city];
+        if (cityRef) {
+          const offset = -90; // Adjust the offset value as needed
+          const topPos = cityRef.getBoundingClientRect().top + window.pageYOffset + offset;
+          window.scrollTo({ top: topPos, behavior: 'smooth' });
+        }
+      };
+      
+      // Assign the handleCitySearch function to a global variable
+      // to make it accessible in your component
+      window.handleCitySearch = handleCitySearch;
     }
-  };
+  }, []);
   
 
 
@@ -67,7 +76,7 @@ const MarkerGrid = ({ markers }) => {
         
       </div>
     <div className="border p-4 mx-auto sm:w-2/4 z-20 sm:mt-0 mt-[820px]">
-    <CitySearchBox cities={Object.keys(groupedMarkers)} onCitySearch={handleCitySearch} />
+    <CitySearchBox cities={Object.keys(groupedMarkers)} onCitySearch={(city) => window.handleCitySearch(city)} />
       {Object.keys(groupedMarkers).map((city, index) => (
         <div key={index}
              className="border p-4 mb-4"
@@ -78,19 +87,18 @@ const MarkerGrid = ({ markers }) => {
           </h1>
           <h2 className="text-xl font-bold -mb-8 dark:text-gray-200">Адрес:</h2>
           <h2 className="text-xl text-right font-bold mb-6 dark:text-gray-200">GPS:</h2>
-          {groupedMarkers[city].map((location, locationIndex) => (
-          <div className='grid grid-cols-3'>
-
-            {/* COPY ADDRESS BUTTON */}
-            <form
-                className='sm:mt-0 mt-6 sm:w-[60px] sm:h-[60px] w-[32px] h-[32px] sm:pl-[14px] pl-[4px] border rounded-md'
-                onClick={() => {
-                  copyToClipboard(location.popUp);
-                }}
-                onTouchStart={() => {
-                  copyToClipboard(location.popUp);
-              }}
-              >
+{groupedMarkers[city].map((location, locationIndex) => (
+  <div key={`${city}-${locationIndex}`} className='grid grid-cols-3'>
+    {/* COPY ADDRESS BUTTON */}
+    <form
+      className='sm:mt-0 mt-6 sm:w-[60px] sm:h-[60px] w-[32px] h-[32px] sm:pl-[14px] pl-[4px] border rounded-md'
+      onClick={() => {
+        copyToClipboard(location.popUp);
+      }}
+      onTouchStart={() => {
+        copyToClipboard(location.popUp);
+      }}
+    >
                 <FaLocationArrow size={20} className='dark:block hidden mt-1 sm:mt-4'/> 
                 <FaLocationArrow size={20} className='dark:hidden mt-1 sm:mt-4'/>
               </form>

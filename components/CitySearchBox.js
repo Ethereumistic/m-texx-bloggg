@@ -1,9 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { BiSearchAlt } from 'react-icons/bi';
 
 const CitySearchBox = ({ cities, onCitySearch }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
+
+  const updateSuggestions = useCallback((input) => {
+    const filteredSuggestions = cities.filter(city =>
+      city.toLowerCase().includes(input.toLowerCase())
+    );
+    setSuggestions(filteredSuggestions);
+  }, [cities]);
+
+  useEffect(() => {
+    updateSuggestions(searchQuery);
+  }, [searchQuery, updateSuggestions]);
 
   const handleSearch = () => {
     if (searchQuery) {
@@ -15,17 +26,6 @@ const CitySearchBox = ({ cities, onCitySearch }) => {
     setSearchQuery(suggestion);
     handleSearch(); // Scroll to the city section
   };
-
-  const updateSuggestions = (input) => {
-    const filteredSuggestions = cities.filter(city =>
-      city.toLowerCase().includes(input.toLowerCase())
-    );
-    setSuggestions(filteredSuggestions);
-  };
-
-  useEffect(() => {
-    updateSuggestions(searchQuery);
-  }, [searchQuery, cities]);
 
   return (
     <div className='text-center'>
